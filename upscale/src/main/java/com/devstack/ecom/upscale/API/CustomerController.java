@@ -1,15 +1,20 @@
 package com.devstack.ecom.upscale.API;
 
 import com.devstack.ecom.upscale.dto.request.RequestCustomerDto;
+import com.devstack.ecom.upscale.service.CustomerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/customers")
+@RequiredArgsConstructor
 public class CustomerController {
+
+    private final CustomerService customerService;
 
     @PostMapping()
     public String create(@RequestBody RequestCustomerDto dto){
-        System.out.println(dto.getAddress());
+        customerService.create(dto);
         return "create()";
     }
 
