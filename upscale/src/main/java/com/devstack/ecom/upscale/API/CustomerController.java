@@ -28,7 +28,7 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public String getById(@PathVariable String id){ // Pathvariables are use to get one values
+    public String getById(@PathVariable String id){ // Pathvariables are used to get one value
         return "getById()";
     }
 
