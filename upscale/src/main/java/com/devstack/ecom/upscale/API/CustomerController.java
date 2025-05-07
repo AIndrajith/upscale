@@ -2,7 +2,10 @@ package com.devstack.ecom.upscale.API;
 
 import com.devstack.ecom.upscale.dto.request.RequestCustomerDto;
 import com.devstack.ecom.upscale.service.CustomerService;
+import com.devstack.ecom.upscale.util.StandardResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,9 +16,20 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping()
-    public String create(@RequestBody RequestCustomerDto dto){
+    public ResponseEntity<StandardResponse> create(@RequestBody RequestCustomerDto dto){
         customerService.create(dto);
-        return "create()";
+        return new ResponseEntity<>(
+                new StandardResponse(201,"Customer was created!..",null),
+                HttpStatus.CREATED
+        );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<StandardResponse> getById(@PathVariable String id){ // Pathvariables are used to get one value
+        return new ResponseEntity<>(
+                new StandardResponse(201,"Customer data!",customerService.findById(id)),
+                HttpStatus.CREATED
+        );
     }
 
     @PutMapping()
@@ -30,11 +44,6 @@ public class CustomerController {
             @RequestParam int size
     ){
         return "findAll()";
-    }
-
-    @GetMapping("/{id}")
-    public String getById(@PathVariable String id){ // Pathvariables are used to get one value
-        return "getById()";
     }
 
     @DeleteMapping("/{id}")
