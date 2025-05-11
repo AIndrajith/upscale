@@ -27,28 +27,42 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getById(@PathVariable String id){ // Pathvariables are used to get one value
         return new ResponseEntity<>(
-                new StandardResponse(201,"Customer data!",customerService.findById(id)),
+                new StandardResponse(200,"Customer data!",customerService.findById(id)),
+                HttpStatus.OK
+        );
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StandardResponse> update(
+            @PathVariable String id,
+            @RequestBody RequestCustomerDto dto){
+        customerService.update(id,dto);
+        return new ResponseEntity<>(
+                new StandardResponse(201,"Customer was updated!",null),
                 HttpStatus.CREATED
         );
     }
 
-    @PutMapping()
-    public String update(@RequestBody RequestCustomerDto dto){
-        return "update()";
-    }
-
     @GetMapping("/list")
-    public String findAll(
+    public ResponseEntity<StandardResponse> findAll(
             @RequestParam String searchText,  // in here we use RequestParam to get more than one value
             @RequestParam int page,
             @RequestParam int size
     ){
-        return "findAll()";
+        return new ResponseEntity<>(
+                new StandardResponse(201,"Customer List!",
+                customerService.findAll(searchText, page, size)),
+                HttpStatus.CREATED
+        );
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable String id){
-        return "delete()";
+    public ResponseEntity<StandardResponse> delete(@PathVariable String id) {
+        customerService.delete(id);
+        return new ResponseEntity<>(
+                new StandardResponse(201,"Customer was deleted!", null),
+                HttpStatus.CREATED
+        );
     }
 }
 
