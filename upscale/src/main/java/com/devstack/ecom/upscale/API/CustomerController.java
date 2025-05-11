@@ -44,12 +44,16 @@ public class CustomerController {
     }
 
     @GetMapping("/list")
-    public String findAll(
+    public ResponseEntity<StandardResponse> findAll(
             @RequestParam String searchText,  // in here we use RequestParam to get more than one value
             @RequestParam int page,
             @RequestParam int size
     ){
-        return "findAll()";
+        return new ResponseEntity<>(
+                new StandardResponse(201,"Customer List!",
+                customerService.findAll(searchText, page, size)),
+                HttpStatus.CREATED
+        );
     }
 
     @DeleteMapping("/{id}")
