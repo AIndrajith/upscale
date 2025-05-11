@@ -27,14 +27,20 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<StandardResponse> getById(@PathVariable String id){ // Pathvariables are used to get one value
         return new ResponseEntity<>(
-                new StandardResponse(201,"Customer data!",customerService.findById(id)),
-                HttpStatus.CREATED
+                new StandardResponse(200,"Customer data!",customerService.findById(id)),
+                HttpStatus.OK
         );
     }
 
-    @PutMapping()
-    public String update(@RequestBody RequestCustomerDto dto){
-        return "update()";
+    @PutMapping("/{id}")
+    public ResponseEntity<StandardResponse> update(
+            @PathVariable String id,
+            @RequestBody RequestCustomerDto dto){
+        customerService.update(id,dto);
+        return new ResponseEntity<>(
+                new StandardResponse(201,"Customer was updated!",null),
+                HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/list")

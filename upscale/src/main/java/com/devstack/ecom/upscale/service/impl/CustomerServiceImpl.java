@@ -39,6 +39,23 @@ public class CustomerServiceImpl implements CustomerService {
         return toResponseCustomerDto(selectedCustomer.get());
     }
 
+    @Override
+    public void update(String id, RequestCustomerDto dto) {
+        Optional<Customer> selectedCustomer = customerRepo.findById(id); // to check whether the customer is exist
+        if (selectedCustomer.isEmpty()){
+            throw new RuntimeException("Customer not found");
+        }
+
+        Customer customer = selectedCustomer.get();
+        customer.setName(dto.getName());
+        customer.setEmail(dto.getEmail());
+        customer.setAddress(dto.getAddress());
+        customer.setPhone(dto.getPhone());
+        customer.setActive(dto.isActive());
+
+        customerRepo.save(customer);
+    }
+
     private ResponseCustomerDto toResponseCustomerDto(Customer customer){
         return ResponseCustomerDto.builder()
                 .propertyId(customer.getProperetyId())
